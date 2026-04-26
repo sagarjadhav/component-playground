@@ -1,7 +1,17 @@
+"use client";
+
+import { useState } from "react";
+import posts from "@/data/posts.json";
 import Navbar from "@/components/Navbar";
 import Card from "@/components/Card";
 
 export default function Home() {
+	const [search, setSearch] = useState("");
+
+	const filteredPosts = posts.filter((post) =>
+		post.title.toLowerCase().includes(search.toLowerCase())
+	);
+
 	return (
 		<>
 			<Navbar />
@@ -10,35 +20,19 @@ export default function Home() {
 					Component Playground
 				</h1>
 
+				{/* Search Input */}
+				<input
+					type="text"
+					placeholder="Search posts..."
+					className="border p-2 mb-4 w-full"
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-					<Card
-						title="First Post"
-						excerpt="This is a sample post"
-						image="https://picsum.photos/600/400"
-						category="Tech"
-						slug="test"
-					/>
-					<Card
-						title="First Post"
-						excerpt="This is a sample post"
-						image="https://picsum.photos/600/400"
-						category="Tech"
-						slug="test"
-					/>
-					<Card
-						title="First Post"
-						excerpt="This is a sample post"
-						image="https://picsum.photos/600/400"
-						category="Tech"
-						slug="test"
-					/>
-					<Card
-						title="First Post"
-						excerpt="This is a sample post"
-						image="https://picsum.photos/600/400"
-						category="Tech"
-						slug="test"
-					/>
+					{filteredPosts.map((post) => (
+							<Card key={post.id} {...post} />
+						))}
 				</div>
 			</main>
 		</>
